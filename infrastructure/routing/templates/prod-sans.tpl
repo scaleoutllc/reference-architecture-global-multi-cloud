@@ -1,0 +1,9 @@
+${area}.${env}.${provider}.${region}.${domain}
+${area}.${env}.${provider}.${domain}
+${area}.${env}.${region}.${domain}
+${area}.${env}.${domain}
+${area}.${domain}
+${env}.${domain}
+${region}.${domain}
+${provider}.${domain}
+${domain}
