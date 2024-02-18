@@ -1,2 +1,2 @@
-# global-multicloud-k8s
+# global-multicloud-infra
 > reference implementation
