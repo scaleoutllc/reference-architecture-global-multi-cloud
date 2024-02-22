@@ -1,5 +1,3 @@
-output "team-dev" {
-  value = merge({
-    certificate_arn = module.team-dev-cert.arn
-  }, module.team-dev)
+output "dev-zone" {
+  value = aws_route53_zone.dev
 }

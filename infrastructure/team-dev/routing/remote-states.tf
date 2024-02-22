@@ -10,5 +10,5 @@ data "terraform_remote_state" "routing" {
 }
 
 locals {
-  routing = data.terraform_remote_state.routing.outputs.team-dev
+  routing = data.terraform_remote_state.routing.outputs
 }

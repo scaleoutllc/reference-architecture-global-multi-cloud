@@ -38,7 +38,7 @@ resource "aws_cloudfront_distribution" "main" {
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"
-  aliases             = local.routing.environments["${local.provider}-${local.region}"][*].name
+  aliases             = local.routing.sans
   origin {
     origin_id   = aws_s3_bucket.main.id
     domain_name = aws_s3_bucket.main.bucket_regional_domain_name
@@ -72,7 +72,7 @@ resource "aws_cloudfront_distribution" "main" {
 }
 
 locals {
-  zones = local.routing.environments["${local.provider}-${local.region}"]
+  zones = local.routing.zones["${local.provider}-${local.region}"]
 }
 
 resource "aws_route53_record" "apex" {
