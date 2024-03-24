@@ -72,14 +72,14 @@ resource "aws_cloudfront_distribution" "main" {
 }
 
 locals {
-  zones = local.routing.zones["${local.provider}-${local.region}"]
+  fullySpecifiedZone = local.routing.zones.fully-specified["${local.provider}-${local.region}"]
 }
 
 resource "aws_route53_record" "apex" {
-  for_each = { for zone in local.zones : zone.name => zone.id }
-  zone_id  = each.value
-  name     = each.key
-  type     = "A"
+  // aws-us.team.dev.wescaleout.cloud
+  zone_id = fullySpecifiedZone.id
+  name    = fullySpecifiedZone.name
+  type    = "A"
   alias {
     name                   = aws_cloudfront_distribution.main.domain_name
     zone_id                = aws_cloudfront_distribution.main.hosted_zone_id
@@ -88,10 +88,9 @@ resource "aws_route53_record" "apex" {
 }
 
 resource "aws_route53_record" "wildcard" {
-  for_each = { for zone in local.zones : zone.name => zone.id }
-  zone_id  = each.value
-  name     = "*"
-  type     = "A"
+  zone_id = fullySpecifiedZone.id
+  name    = "*"
+  type    = "A"
   alias {
     name                   = aws_cloudfront_distribution.main.domain_name
     zone_id                = aws_cloudfront_distribution.main.hosted_zone_id

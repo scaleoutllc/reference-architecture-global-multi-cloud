@@ -3,7 +3,7 @@ locals {
   team      = "team"
   env       = "dev"
   region    = "au"
-  workspace = "static"
+  workspace = "demo"
   envName   = "${local.provider}-${local.team}-${local.env}-${local.region}"
   name      = "${local.envName}-${local.workspace}"
 }

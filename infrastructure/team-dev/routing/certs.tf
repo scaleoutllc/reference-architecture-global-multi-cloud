@@ -2,7 +2,7 @@ locals {
   zones = merge(
     { for key, zone in aws_route53_zone.provider : "${zone.name}" => zone.id },
     { for key, zone in aws_route53_zone.region : "${zone.name}" => zone.id },
-    { for key, zone in aws_route53_zone.composite : "${zone.name}" => zone.id }
+    { for key, zone in aws_route53_zone.fully-specified : "${zone.name}" => zone.id }
   )
   sans = flatten([
     "*.${local.domain}",
@@ -43,7 +43,6 @@ resource "aws_route53_record" "validate" {
   depends_on = [
     aws_route53_zone.team,
     aws_route53_zone.provider,
-    aws_route53_zone.region,
-    aws_route53_zone.composite
+    aws_route53_zone.region
   ]
 }
