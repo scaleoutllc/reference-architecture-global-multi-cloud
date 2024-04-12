@@ -1,6 +1,5 @@
 locals {
-  domain      = "team.dev.wescaleout.cloud"
-  dnsProvider = "aws-us"
+  domain = "team.dev.wescaleout.cloud"
   deployments = {
     "us" = [
       {
