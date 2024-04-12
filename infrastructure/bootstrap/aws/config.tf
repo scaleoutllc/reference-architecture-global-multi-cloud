@@ -5,7 +5,7 @@ terraform {
       version = "=5.0"
     }
   }
-  // the "cloud" block should be commented out for the very first apply
+  // this block should be commented out for the very first apply
   cloud {
     organization = "scaleout"
     workspaces {

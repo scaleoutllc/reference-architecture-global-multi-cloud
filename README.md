@@ -1,2 +1,2 @@
-# global-multicloud-infra
+# global multi cloud infrastructure
 > reference implementation
