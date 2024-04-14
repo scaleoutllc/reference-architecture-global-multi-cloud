@@ -1,12 +1,12 @@
 resource "aws_lb" "public_ingress" {
-  name         = "lb-${local.name}"
+  name         = local.name
   subnets      = local.network.vpc.public_subnets
   idle_timeout = 130
   security_groups = [
     aws_security_group.public_ingress.id
   ]
   tags = merge(local.tags, {
-    Name = "lb-${local.name}"
+    Name = local.name
   })
   lifecycle {
     ignore_changes = [tags]
