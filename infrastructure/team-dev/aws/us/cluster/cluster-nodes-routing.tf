@@ -15,7 +15,7 @@ module "routing-nodes" {
   ]
   cluster_name                      = module.eks.cluster_name
   cluster_service_cidr              = module.eks.cluster_service_cidr
-  subnet_ids                        = local.network.vpc.private_subnets
+  subnet_ids                        = local.network.private_subnets
   cluster_primary_security_group_id = module.eks.cluster_primary_security_group_id
   vpc_security_group_ids = [
     module.eks.node_security_group_id,

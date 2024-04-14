@@ -1,6 +1,6 @@
 resource "aws_lb" "public_ingress" {
   name         = local.name
-  subnets      = local.network.vpc.public_subnets
+  subnets      = local.network.public_subnets
   idle_timeout = 130
   security_groups = [
     aws_security_group.public_ingress.id
@@ -17,7 +17,7 @@ resource "aws_lb_target_group" "public_ingress" {
   name     = "${local.name}-ingress"
   port     = 31080
   protocol = "HTTP"
-  vpc_id   = local.network.vpc.vpc_id
+  vpc_id   = local.network.vpc_id
   stickiness {
     type    = "lb_cookie"
     enabled = false
@@ -108,7 +108,7 @@ resource "aws_lb_listener_rule" "public_ingress_prevent_public" {
 
 resource "aws_security_group" "public_ingress" {
   name   = "${local.name}-world-to-lb"
-  vpc_id = local.network.vpc.vpc_id
+  vpc_id = local.network.vpc_id
   egress {
     from_port   = 0
     to_port     = 0

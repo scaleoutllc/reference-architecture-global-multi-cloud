@@ -11,7 +11,7 @@ resource "aws_security_group_rule" "private_subnets" {
   from_port         = 0
   to_port           = 0
   protocol          = "-1"
-  cidr_blocks       = local.network.vpc.private_subnets_cidr_blocks
+  cidr_blocks       = local.network.private_subnets_cidr_blocks
   security_group_id = data.aws_security_group.vpc_endpoints.id
 }
 
