@@ -10,7 +10,7 @@ locals {
   provider  = "aws"
   team      = "team"
   env       = "dev"
-  region    = "au"
+  region    = "us"
   workspace = "cluster-config"
   envName   = "${local.provider}-${local.team}-${local.env}-${local.region}"
   name      = "${local.envName}-${local.workspace}"
@@ -30,8 +30,8 @@ terraform {
   cloud {
     organization = "scaleout"
     workspaces {
-      project = "aws-team-dev-au"
-      name    = "aws-team-dev-au-cluster-config"
+      project = "aws-team-dev-us"
+      name    = "aws-team-dev-us-cluster-config"
     }
   }
 }

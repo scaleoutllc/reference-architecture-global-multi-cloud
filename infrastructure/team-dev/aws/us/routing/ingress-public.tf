@@ -22,7 +22,6 @@ resource "aws_lb_target_group" "public_ingress" {
     type    = "lb_cookie"
     enabled = false
   }
-  /*
   health_check {
     healthy_threshold   = 2
     unhealthy_threshold = 2
@@ -32,7 +31,6 @@ resource "aws_lb_target_group" "public_ingress" {
     path                = "/"
     interval            = 60
   }
-  */
 }
 
 data "aws_eks_node_group" "routing" {

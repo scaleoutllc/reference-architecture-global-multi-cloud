@@ -6,8 +6,6 @@ data "aws_eks_cluster_auth" "this_env" {
   name = local.envName
 }
 
-data "aws_region" "this_env" {}
-
 locals {
   provider  = "aws"
   team      = "team"
