@@ -3,10 +3,18 @@ kind: Namespace
 metadata:
   name: routing
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-html
+  namespace: routing
+data:
+  index.html: aws-us
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: nginx
   namespace: routing
 spec:
   selector:
@@ -18,11 +26,18 @@ spec:
       labels:
         app: nginx
     spec:
+      volumes:
+      - name: nginx-html
+        configMap:
+          name: nginx-html
       containers:
       - name: nginx
         image: nginx:1.25.4
         ports:
         - containerPort: 80
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: nginx-html
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
