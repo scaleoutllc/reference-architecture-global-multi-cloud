@@ -9,7 +9,7 @@ metadata:
   name: nginx-html
   namespace: routing
 data:
-  index.html: aws-us
+  index.html: hello from aws-au!
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -38,16 +38,13 @@ spec:
         volumeMounts:
         - mountPath: /usr/share/nginx/html
           name: nginx-html
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - nginx
-            topologyKey: failure-domain.beta.kubernetes.io/zone
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app: nginx
       nodeSelector:
         node.wescaleout.cloud/routing: "true"
       tolerations:

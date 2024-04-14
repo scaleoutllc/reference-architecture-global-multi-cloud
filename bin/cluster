@@ -41,11 +41,11 @@ fi
 echo "[$2]: Spinning $1..."
 cd "${SCRIPT_PATH}/../${CLUSTER_PATH}"
 if [[ $1 == "up" ]]; then
-  workspaces=("network" "cluster" "routing")
+  workspaces=("network" "cluster" "cluster-config" "routing")
   command="apply"
 fi
 if [[ $1 == "down" ]]; then
-  workspaces=("routing" "cluster" "network")
+  workspaces=("cluster-config" "routing" "cluster" "network")
   command="destroy"
 fi
 
