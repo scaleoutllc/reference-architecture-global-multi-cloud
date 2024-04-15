@@ -64,7 +64,8 @@ terraform {
   cloud {
     organization = "scaleout"
     workspaces {
-      name = "team-dev-routing"
+      project = "scaleout-platform"
+      name    = "scaleout-platform-team-dev-routing"
     }
   }
 }

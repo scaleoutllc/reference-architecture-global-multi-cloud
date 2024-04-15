@@ -4,7 +4,7 @@ data "terraform_remote_state" "routing" {
   config = {
     organization = "scaleout"
     workspaces = {
-      name = "routing"
+      name = "scaleout-platform-routing"
     }
   }
 }

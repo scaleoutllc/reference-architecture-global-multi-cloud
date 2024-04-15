@@ -7,6 +7,8 @@ resource "google_project" "team-dev-au" {
 
 resource "google_project_service" "team-dev-au" {
   for_each = toset([
+    "container.googleapis.com",
+    "compute.googleapis.com",
     "iam.googleapis.com",
     "cloudresourcemanager.googleapis.com",
     "sts.googleapis.com",

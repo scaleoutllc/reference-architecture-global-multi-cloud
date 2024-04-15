@@ -20,17 +20,17 @@ output "aws-au" {
 
 output "gcp-us" {
   value = {
-    certificate_id = google_certificate_manager_certificate.gcp-us.id
-    domain         = aws_route53_zone.fully-specified["gcp-us"].name
-    zone_id        = aws_route53_zone.fully-specified["gcp-us"].id
+    certificate_map_id = google_certificate_manager_certificate_map.gcp-us.id
+    domain             = aws_route53_zone.fully-specified["gcp-us"].name
+    zone_id            = aws_route53_zone.fully-specified["gcp-us"].id
   }
 }
 
 output "gcp-au" {
   value = {
-    certificate_id = google_certificate_manager_certificate.gcp-au.id
-    domain         = aws_route53_zone.fully-specified["gcp-au"].name
-    zone_id        = aws_route53_zone.fully-specified["gcp-au"].id
+    certificate_map_id = google_certificate_manager_certificate_map.gcp-au.id
+    domain             = aws_route53_zone.fully-specified["gcp-au"].name
+    zone_id            = aws_route53_zone.fully-specified["gcp-au"].id
   }
 }
 
