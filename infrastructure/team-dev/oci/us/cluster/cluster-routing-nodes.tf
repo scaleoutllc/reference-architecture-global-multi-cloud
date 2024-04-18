@@ -55,7 +55,7 @@ resource "oci_containerengine_node_pool" "routing" {
         subnet_id           = local.network.nodes_subnet.id
       }
     }
-    size = 1
+    size = 2
   }
   node_source_details {
     source_type = "IMAGE"
