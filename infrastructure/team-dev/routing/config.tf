@@ -9,6 +9,10 @@ locals {
       {
         provider = "gcp",
         region   = "us-east1"
+      },
+      {
+        provider = "oci",
+        region   = "us-chicago-1"
       }
     ],
     "au" = [

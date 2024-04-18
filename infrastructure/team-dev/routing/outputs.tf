@@ -34,6 +34,13 @@ output "gcp-au" {
   }
 }
 
+output "oci-us" {
+  value = {
+    domain  = aws_route53_zone.fully-specified["gcp-au"].name
+    zone_id = aws_route53_zone.fully-specified["gcp-au"].id
+  }
+}
+
 output "zones" {
   value = {
     team            = aws_route53_zone.team
