@@ -22,7 +22,7 @@ resource "oci_core_security_list" "control-plane" {
   }
   egress_security_rules {
     description = "to nodes"
-    protocol    = "6"
+    protocol    = "all"
     destination = local.network.nodes
   }
   vcn_id = oci_core_vcn.main.id

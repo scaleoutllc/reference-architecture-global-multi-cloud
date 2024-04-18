@@ -28,7 +28,7 @@ resource "oci_core_security_list" "nodes" {
   }
   ingress_security_rules {
     description = "from control plane"
-    protocol    = "6"
+    protocol    = "all"
     source      = local.network.control_plane
   }
   vcn_id = oci_core_vcn.main.id
