@@ -2,18 +2,18 @@ output "vcn_id" {
   value = oci_core_vcn.main.id
 }
 
-output "public_subnets" {
-  value = oci_core_subnet.public[*].id
+output "nodes_subnet" {
+  value = oci_core_subnet.nodes
 }
 
-output "private_subnets" {
-  value = oci_core_subnet.private[*].id
+output "control_plane_subnet" {
+  value = oci_core_subnet.control-plane
 }
 
-output "public_subnets_cidr_blocks" {
-  value = oci_core_subnet.public[*].cidr_block
+output "private_subnet" {
+  value = oci_core_subnet.private
 }
 
-output "private_subnets_cidr_blocks" {
-  value = oci_core_subnet.private[*].cidr_block
+output "public_subnet" {
+  value = oci_core_subnet.public
 }

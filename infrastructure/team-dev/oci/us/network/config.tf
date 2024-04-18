@@ -8,10 +8,13 @@ locals {
   name      = "${local.envName}-${local.workspace}"
   tags      = {}
   network = {
-    // https://www.davidc.net/sites/default/subnets/subnets.html?network=10.50.0.0&mask=20&division=13.3d40
-    cidr            = "10.50.0.0/20"
-    private_subnets = ["10.50.0.0/22", "10.50.4.0/22", "10.50.8.0/22"],
-    public_subnets  = ["10.50.12.0/24", "10.50.13.0/24", "10.50.14.0/24"]
+    // https://www.davidc.net/sites/default/subnets/subnets.html?network=10.50.0.0&mask=20&division=9.550
+    cidr    = "10.50.0.0/20"
+    nodes   = "10.50.0.0/21"
+    private = "10.50.8.0/22"
+    // unused 10.50.12.0/23
+    control_plane = "10.50.14.0/24"
+    public        = "10.50.15.0/24"
   }
   compartment_id = "ocid1.tenancy.oc1..aaaaaaaaqmdyo455h7pgzmgvsn5ue4dg73oxhp47udjc66c3vlg5h7wyzvsa"
 }
@@ -19,8 +22,8 @@ locals {
 terraform {
   required_providers {
     oci = {
-      source  = "hashicorp/oci"
-      version = "5.37.0"
+      source  = "oracle/oci"
+      version = "5.38.0"
     }
   }
   cloud {
