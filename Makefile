@@ -5,8 +5,8 @@ help: ## Displays information about available make tasks
 
 build-clusters: ## Build all clusters in parallel.
 	parallel --ungroup --halt soon,done=100% --term-seq INT,600000 \
-	  './bin/cluster up' ::: team-dev-aws-us team-dev-aws-au
+	  './bin/cluster up' ::: team-dev-aws-us team-dev-aws-au team-dev-oci-us
 
 destroy-clusters: ## Tear down all clusters in parallel.
 	parallel --ungroup --halt soon,done=100% --term-seq INT,600000 \
-	  './bin/cluster down' ::: team-dev-aws-us team-dev-aws-au
+	  './bin/cluster down' ::: team-dev-aws-us team-dev-aws-au team-dev-oci-us
