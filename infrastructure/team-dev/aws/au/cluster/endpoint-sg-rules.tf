@@ -1,9 +1,7 @@
-# This security group is created for use with VPC endpoints, because our
-# nodes are going to be the primary users of the VPC endpoints we need to
-# explicitly add rules for them to be able to communicate. This isn't
-# posisble to do during VPC creation because we have no yet made the EKS
-# cluster. Instead, we fetch the security group that is created for the
-# endpoints and add one-off rules per what EKS requires.
+# This security group is created for use with VPC endpoints, because our nodes are going to be the primary users
+# of the VPC endpoints we need to explicitly add rules for them to be able to communicate. This isn't posisble to
+# do during VPC creation because we have no yet made the EKS cluster.
+# Instead, we fetch the security group that is created for the endpoints and add one-off rules per what EKS requires.
 data "aws_security_group" "vpc_endpoints" {
   name = "${local.envName}-network-vpc-interface-ingress"
 }

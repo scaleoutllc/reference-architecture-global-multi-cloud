@@ -11,6 +11,7 @@ module "routing-nodes" {
       key    = "node.wescaleout.cloud/routing"
       value  = "true"
       effect = "NO_SCHEDULE"
+
     }
   ]
   cluster_name                      = module.eks.cluster_name
@@ -19,12 +20,16 @@ module "routing-nodes" {
   cluster_primary_security_group_id = module.eks.cluster_primary_security_group_id
   vpc_security_group_ids = [
     module.eks.node_security_group_id,
-    aws_security_group.lb-to-routing-nodes.id
+    local.network.internal_ingress_security_group_id
   ]
-  min_size                 = 2
-  max_size                 = 6
-  desired_size             = 3
-  instance_types           = ["t3.medium", "t3.small"]
+  min_size     = 2
+  max_size     = 6
+  desired_size = 3
+  instance_types = [
+    "t2.medium",
+    "t3.medium",
+    "m3.medium"
+  ]
   capacity_type            = "SPOT"
   use_name_prefix          = false
   iam_role_use_name_prefix = false

@@ -58,11 +58,11 @@ spec:
   ports:
     - name: health
       protocol: "TCP"
-      port: 30877
-      nodePort: 30877
+      port: 30021
+      nodePort: 30021
       targetPort: 80
     - name: http
       protocol: "TCP"
-      port: 31080
-      nodePort: 31080
+      port: 30080
+      nodePort: 30080
       targetPort: 80

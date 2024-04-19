@@ -17,9 +17,17 @@ resource "oci_containerengine_node_pool" "system" {
     ocpus         = 1
   }
   node_config_details {
+    nsg_ids = [
+      local.network.node_security_group_id
+    ]
     node_pool_pod_network_option_details {
-      cni_type       = "OCI_VCN_IP_NATIVE"
-      pod_subnet_ids = [local.network.nodes_subnet.id]
+      cni_type = "OCI_VCN_IP_NATIVE"
+      pod_subnet_ids = [
+        local.network.nodes_subnet.id
+      ]
+      pod_nsg_ids = [
+        local.network.pod_security_group_id
+      ]
     }
     // nodes spread across availability domains in single regional subnet.
     dynamic "placement_configs" {

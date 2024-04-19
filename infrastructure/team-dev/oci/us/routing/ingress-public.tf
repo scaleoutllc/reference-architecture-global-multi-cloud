@@ -21,7 +21,7 @@ resource "oci_network_load_balancer_network_load_balancer" "public-ingress" {
   is_preserve_source_destination = false
   network_security_group_ids = [
     oci_core_network_security_group.world-to-lb.id,
-    local.cluster.lb-to-cluster
+    local.network.internal_ingress_security_group_id
   ]
 }
 
@@ -32,7 +32,7 @@ resource "oci_network_load_balancer_backend_set" "public-ingress" {
   health_checker {
     protocol           = "HTTP"
     interval_in_millis = 60000
-    port               = 30877
+    port               = 30080
     retries            = 2
     return_code        = "200"
     timeout_in_millis  = 3000
@@ -57,7 +57,7 @@ resource "oci_network_load_balancer_backend" "public-ingress" {
   count                    = length(local.active_nodes)
   backend_set_name         = oci_network_load_balancer_backend_set.public-ingress.name
   network_load_balancer_id = oci_network_load_balancer_network_load_balancer.public-ingress.id
-  port                     = 30877
+  port                     = 30080
   target_id                = local.active_nodes[count.index].id
 }
 
@@ -65,6 +65,6 @@ resource "oci_network_load_balancer_listener" "public-ingress" {
   default_backend_set_name = oci_network_load_balancer_backend_set.public-ingress.name
   name                     = "${local.name}-ingress"
   network_load_balancer_id = oci_network_load_balancer_network_load_balancer.public-ingress.id
-  port                     = "80"
+  port                     = 80
   protocol                 = "TCP"
 }

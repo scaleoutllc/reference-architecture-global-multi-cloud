@@ -9,27 +9,46 @@ resource "oci_core_subnet" "nodes" {
   // use our own security list, OCI default allows SSH traffic from anywhere
   security_list_ids = [
     oci_core_security_list.oci-core-services.id,
-    oci_core_security_list.nodes.id
   ]
 }
 
-resource "oci_core_security_list" "nodes" {
+resource "oci_core_network_security_group" "node" {
   compartment_id = local.compartment_id
-  display_name   = "${local.name}-nodes"
-  egress_security_rules {
-    description = "to world"
-    protocol    = "all"
-    destination = "0.0.0.0/0"
-  }
-  ingress_security_rules {
-    description = "from other nodes"
-    protocol    = "all"
-    source      = local.network.nodes
-  }
-  ingress_security_rules {
-    description = "from control plane"
-    protocol    = "all"
-    source      = local.network.control_plane
-  }
-  vcn_id = oci_core_vcn.main.id
+  display_name   = "${local.envName}-node"
+  vcn_id         = oci_core_vcn.main.id
+}
+
+resource "oci_core_network_security_group_security_rule" "node-egress-world" {
+  description               = "let nodes egress anywhere"
+  network_security_group_id = oci_core_network_security_group.node.id
+  direction                 = "EGRESS"
+  protocol                  = "all"
+  destination               = "0.0.0.0/0"
+}
+
+resource "oci_core_network_security_group_security_rule" "pod-ingress-node" {
+  description               = "let pods reach other nodes"
+  network_security_group_id = oci_core_network_security_group.node.id
+  direction                 = "INGRESS"
+  protocol                  = "all"
+  source_type               = "NETWORK_SECURITY_GROUP"
+  source                    = oci_core_network_security_group.pod.id
+}
+
+resource "oci_core_network_security_group_security_rule" "node-ingress-node" {
+  description               = "let nodes reach other nodes"
+  network_security_group_id = oci_core_network_security_group.node.id
+  direction                 = "INGRESS"
+  protocol                  = "all"
+  source_type               = "NETWORK_SECURITY_GROUP"
+  source                    = oci_core_network_security_group.node.id
+}
+
+resource "oci_core_network_security_group_security_rule" "control-plane-ingress-node" {
+  description               = "let control plane reach nodes"
+  network_security_group_id = oci_core_network_security_group.node.id
+  direction                 = "INGRESS"
+  protocol                  = "all"
+  source_type               = "NETWORK_SECURITY_GROUP"
+  source                    = oci_core_network_security_group.control-plane.id
 }

@@ -4,9 +4,13 @@ help: ## Displays information about available make tasks
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 build-clusters: ## Build all clusters in parallel.
-	parallel --ungroup --halt soon,done=100% --term-seq INT,600000 \
+	parallel --joblog parallel.log --ungroup --halt soon,done=100% --term-seq INT,600000 \
 	  './bin/cluster up' ::: team-dev-aws-us team-dev-aws-au team-dev-oci-us
+	cat parallel.log
+	rm parallel.log
 
 destroy-clusters: ## Tear down all clusters in parallel.
-	parallel --ungroup --halt soon,done=100% --term-seq INT,600000 \
+	parallel --joblog parallel.log --ungroup --halt soon,done=100% --term-seq INT,600000 \
 	  './bin/cluster down' ::: team-dev-aws-us team-dev-aws-au team-dev-oci-us
+	cat parallel.log
+	rm parallel.log

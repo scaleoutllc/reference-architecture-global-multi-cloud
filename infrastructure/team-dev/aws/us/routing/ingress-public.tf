@@ -1,9 +1,8 @@
 resource "aws_lb" "public_ingress" {
-  name         = local.name
-  subnets      = local.network.public_subnets
-  idle_timeout = 130
+  name    = local.name
+  subnets = local.network.public_subnets
   security_groups = [
-    aws_security_group.public_ingress.id
+    local.network.world_ingress_security_group_id
   ]
   tags = merge(local.tags, {
     Name = local.name
@@ -15,7 +14,7 @@ resource "aws_lb" "public_ingress" {
 
 resource "aws_lb_target_group" "public_ingress" {
   name     = "${local.name}-ingress"
-  port     = 31080
+  port     = 30080
   protocol = "HTTP"
   vpc_id   = local.network.vpc_id
   stickiness {
@@ -27,20 +26,15 @@ resource "aws_lb_target_group" "public_ingress" {
     unhealthy_threshold = 2
     timeout             = 3
     protocol            = "HTTP"
-    port                = 30877
-    path                = "/"
-    interval            = 60
+    port                = 30021
+    path                = "/healthz/ready"
+    interval            = 15
   }
-}
-
-data "aws_eks_node_group" "routing" {
-  cluster_name    = local.envName
-  node_group_name = "${local.envName}-routing"
 }
 
 resource "aws_autoscaling_attachment" "public_ingress" {
   lb_target_group_arn    = aws_lb_target_group.public_ingress.arn
-  autoscaling_group_name = data.aws_eks_node_group.routing.resources[0].autoscaling_groups[0].name
+  autoscaling_group_name = local.cluster.routing_autoscaling_group_id
 }
 
 resource "aws_lb_listener" "public_ingress_nonsecure" {
@@ -104,31 +98,4 @@ resource "aws_lb_listener_rule" "public_ingress_prevent_public" {
   }
 }
 
-resource "aws_security_group" "public_ingress" {
-  name   = "${local.name}-world-to-lb"
-  vpc_id = local.network.vpc_id
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  tags = merge(local.tags, {
-    Name = "${local.name}-world-to-lb"
-  })
-  lifecycle {
-    ignore_changes = [tags]
-  }
-}
+

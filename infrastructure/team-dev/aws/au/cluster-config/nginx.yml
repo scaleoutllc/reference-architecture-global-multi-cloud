@@ -9,7 +9,7 @@ metadata:
   name: nginx-html
   namespace: routing
 data:
-  index.html: hello from aws-au!
+  index.html: hello from aws-us!
 ---
 apiVersion: apps/v1
 kind: Deployment

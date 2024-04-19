@@ -13,7 +13,3 @@ output "kubectl-bootstrap" {
 output "routing-node-pool-id" {
   value = oci_containerengine_node_pool.routing.id
 }
-
-output "lb-to-cluster" {
-  value = oci_core_network_security_group.lb-to-cluster.id
-}

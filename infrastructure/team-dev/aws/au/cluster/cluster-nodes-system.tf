@@ -13,7 +13,13 @@ module "system-nodes" {
   vpc_security_group_ids = [
     module.eks.node_security_group_id
   ]
-  instance_types           = ["t3.medium", "t3.small"]
+  instance_types = [
+    "t2.small",
+    "t3.small",
+    "t2.medium",
+    "t3.medium",
+    "m3.medium"
+  ]
   capacity_type            = "SPOT"
   min_size                 = 2
   max_size                 = 6

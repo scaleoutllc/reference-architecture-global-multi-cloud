@@ -9,12 +9,5 @@ resource "oci_core_subnet" "private" {
   // use our own security list, OCI default allows SSH traffic from anywhere
   security_list_ids = [
     oci_core_security_list.oci-core-services.id,
-    oci_core_security_list.private.id
   ]
-}
-
-resource "oci_core_security_list" "private" {
-  compartment_id = local.compartment_id
-  display_name   = "${local.name}-private"
-  vcn_id         = oci_core_vcn.main.id
 }

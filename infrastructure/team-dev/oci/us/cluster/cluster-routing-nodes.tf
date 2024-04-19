@@ -1,25 +1,3 @@
-resource "oci_core_network_security_group" "lb-to-cluster" {
-  compartment_id = local.compartment_id
-  display_name   = "${local.envName}-lb-to-cluster"
-  vcn_id         = local.network.vcn_id
-}
-
-resource "oci_core_network_security_group_security_rule" "lb-to-cluster" {
-  network_security_group_id = oci_core_network_security_group.lb-to-cluster.id
-  direction                 = "INGRESS"
-  protocol                  = 6
-  source_type               = "NETWORK_SECURITY_GROUP"
-  source                    = oci_core_network_security_group.lb-to-cluster.id
-}
-
-resource "oci_core_network_security_group_security_rule" "cluster-to-lb" {
-  network_security_group_id = oci_core_network_security_group.lb-to-cluster.id
-  direction                 = "EGRESS"
-  protocol                  = 6
-  destination_type          = "NETWORK_SECURITY_GROUP"
-  destination               = oci_core_network_security_group.lb-to-cluster.id
-}
-
 resource "oci_containerengine_node_pool" "routing" {
   cluster_id     = oci_containerengine_cluster.main.id
   compartment_id = local.compartment_id
@@ -40,11 +18,17 @@ resource "oci_containerengine_node_pool" "routing" {
   }
   node_config_details {
     nsg_ids = [
-      oci_core_network_security_group.lb-to-cluster.id
+      local.network.node_security_group_id,
+      local.network.internal_ingress_security_group_id
     ]
     node_pool_pod_network_option_details {
-      cni_type       = "OCI_VCN_IP_NATIVE"
-      pod_subnet_ids = [local.network.nodes_subnet.id]
+      cni_type = "OCI_VCN_IP_NATIVE"
+      pod_subnet_ids = [
+        local.network.nodes_subnet.id
+      ]
+      pod_nsg_ids = [
+        local.network.pod_security_group_id
+      ]
     }
     // nodes spread across availability domains in single regional subnet.
     dynamic "placement_configs" {

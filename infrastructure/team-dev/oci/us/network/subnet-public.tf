@@ -13,6 +13,7 @@ resource "oci_core_subnet" "public" {
   ]
 }
 
+// TODO: remove this as security lists will be deprecated.
 resource "oci_core_security_list" "public" {
   compartment_id = local.compartment_id
   display_name   = "${local.name}-public"
@@ -21,5 +22,10 @@ resource "oci_core_security_list" "public" {
     description = "to world"
     protocol    = "all"
     destination = "0.0.0.0/0"
+  }
+  ingress_security_rules {
+    description = "from world"
+    protocol    = "all"
+    source      = "0.0.0.0/0"
   }
 }

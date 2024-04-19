@@ -4,8 +4,8 @@ data "oci_containerengine_node_pool_option" "oke" {
 }
 
 locals {
-  cluster_k8s_version  = "1.27.2"
-  node_k8s_version     = "1.27.2"
+  cluster_k8s_version  = "1.28.2"
+  node_k8s_version     = "1.28.2"
   node_image_x86_regex = "Oracle-Linux-8.9-\\d{4}.\\d{2}.\\d{2}-\\d{1}-OKE-${local.node_k8s_version}"
   node_image_x86 = element([
     for item in data.oci_containerengine_node_pool_option.oke.sources :
@@ -25,5 +25,8 @@ resource "oci_containerengine_cluster" "main" {
   endpoint_config {
     is_public_ip_enabled = "true"
     subnet_id            = local.network.control_plane_subnet.id
+    nsg_ids = [
+      local.network.control_plane_security_group_id
+    ]
   }
 }
