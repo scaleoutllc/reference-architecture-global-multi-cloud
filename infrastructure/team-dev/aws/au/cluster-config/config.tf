@@ -26,6 +26,10 @@ terraform {
       source  = "gavinbunney/kubectl"
       version = "=1.14.0"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "=2.13.1"
+    }
   }
   cloud {
     organization = "scaleout"
@@ -45,4 +49,12 @@ provider "kubectl" {
   host                   = data.aws_eks_cluster.this_env.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.this_env.certificate_authority[0].data)
   token                  = data.aws_eks_cluster_auth.this_env.token
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = data.aws_eks_cluster.this_env.endpoint
+    cluster_ca_certificate = base64decode(data.aws_eks_cluster.this_env.certificate_authority[0].data)
+    token                  = data.aws_eks_cluster_auth.this_env.token
+  }
 }
