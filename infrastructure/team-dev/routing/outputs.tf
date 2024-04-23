@@ -38,7 +38,9 @@ output "oci-us" {
   value = {
     domain  = aws_route53_zone.fully-specified["oci-us"].name
     zone_id = aws_route53_zone.fully-specified["oci-us"].id
+    cert    = acme_certificate.oci-us
   }
+  sensitive = true
 }
 
 output "zones" {

@@ -62,7 +62,14 @@ terraform {
     google = {
       source  = "hashicorp/google"
       version = "=5.24"
-
+    }
+    oci = {
+      source  = "oracle/oci"
+      version = "5.38.0"
+    }
+    acme = {
+      source  = "vancluever/acme"
+      version = "=2.21.0"
     }
   }
   cloud {
@@ -95,4 +102,13 @@ provider "google" {
   project = "scaleout-team-dev-au"
   region  = "australia-southeast1"
   alias   = "au"
+}
+
+provider "oci" {
+  region              = "us-chicago-1"
+  config_file_profile = "scaleout"
+}
+
+provider "acme" {
+  server_url = "https://acme-v02.api.letsencrypt.org/directory"
 }
