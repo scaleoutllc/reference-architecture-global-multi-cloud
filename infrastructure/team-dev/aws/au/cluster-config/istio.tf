@@ -52,7 +52,7 @@ resource "helm_release" "istio-gateway" {
   namespace  = "istio-system"
   version    = "1.21.1"
   values = [<<YAML
-repliacs: 3
+replicaCount: 3
 nodeSelector:
   node.wescaleout.cloud/routing: "true"
 tolerations:
