@@ -18,6 +18,10 @@ terraform {
       source  = "gavinbunney/kubectl"
       version = "=1.14.0"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "=2.13.1"
+    }
   }
   cloud {
     organization = "scaleout"
@@ -51,5 +55,27 @@ provider "kubectl" {
       "--profile",
       "scaleout"
     ]
+  }
+}
+
+provider "helm" {
+  kubernetes {
+    host     = local.cluster.endpoint
+    insecure = true // could not find CA cert in attributes of any resource
+    exec {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      command     = "oci"
+      args = [
+        "ce",
+        "cluster",
+        "generate-token",
+        "--cluster-id",
+        "${local.cluster.id}",
+        "--region",
+        "us-chicago-1",
+        "--profile",
+        "scaleout"
+      ]
+    }
   }
 }

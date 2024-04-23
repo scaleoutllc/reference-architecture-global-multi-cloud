@@ -17,24 +17,6 @@ resource "oci_core_network_security_group" "control-plane" {
   vcn_id         = oci_core_vcn.main.id
 }
 
-// is this needed?
-// resource "oci_core_network_security_group_security_rule" "control-plane-egress-world" {
-//   description               = "let control plane reach world"
-//   network_security_group_id = oci_core_network_security_group.control-plane.id
-//   direction                 = "EGRESS"
-//   protocol                  = "6"
-//   destination               = "0.0.0.0/0"
-// }
-
-resource "oci_core_network_security_group_security_rule" "control-plane-egress-nodes" {
-  description               = "let control plane reach nodes"
-  network_security_group_id = oci_core_network_security_group.control-plane.id
-  direction                 = "EGRESS"
-  protocol                  = "all"
-  destination_type          = "NETWORK_SECURITY_GROUP"
-  destination               = oci_core_network_security_group.node.id
-}
-
 resource "oci_core_network_security_group_security_rule" "world-ingress-control-plane" {
   description               = "let world / operators reach control plane"
   network_security_group_id = oci_core_network_security_group.control-plane.id
@@ -50,4 +32,22 @@ resource "oci_core_network_security_group_security_rule" "nodes-ingress-control-
   protocol                  = "all"
   source_type               = "NETWORK_SECURITY_GROUP"
   source                    = oci_core_network_security_group.node.id
+}
+
+resource "oci_core_network_security_group_security_rule" "control-plane-egress-nodes" {
+  description               = "let control plane reach nodes"
+  network_security_group_id = oci_core_network_security_group.control-plane.id
+  direction                 = "EGRESS"
+  protocol                  = "all"
+  destination_type          = "NETWORK_SECURITY_GROUP"
+  destination               = oci_core_network_security_group.node.id
+}
+
+resource "oci_core_network_security_group_security_rule" "control-plane-egress-pods" {
+  description               = "let control plane reach pods for webhooks"
+  network_security_group_id = oci_core_network_security_group.control-plane.id
+  direction                 = "EGRESS"
+  protocol                  = "all"
+  destination_type          = "NETWORK_SECURITY_GROUP"
+  destination               = oci_core_network_security_group.pod.id
 }

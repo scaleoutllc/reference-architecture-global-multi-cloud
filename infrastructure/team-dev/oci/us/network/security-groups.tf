@@ -36,3 +36,12 @@ resource "oci_core_network_security_group_security_rule" "pod-ingress-pod" {
   source_type               = "NETWORK_SECURITY_GROUP"
   source                    = oci_core_network_security_group.pod.id
 }
+
+resource "oci_core_network_security_group_security_rule" "pod-ingress-control-plane" {
+  description               = "let pods ingress from control plane network"
+  network_security_group_id = oci_core_network_security_group.pod.id
+  direction                 = "INGRESS"
+  protocol                  = "all"
+  source_type               = "NETWORK_SECURITY_GROUP"
+  source                    = oci_core_network_security_group.control-plane.id
+}

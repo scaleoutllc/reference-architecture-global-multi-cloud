@@ -1,13 +1,13 @@
-resource "oci_containerengine_node_pool" "apps" {
+resource "oci_containerengine_node_pool" "app" {
   cluster_id     = oci_containerengine_cluster.main.id
   compartment_id = local.compartment_id
-  name           = "${local.envName}-apps"
+  name           = "${local.envName}-app"
   initial_node_labels {
     key   = "node.kubernetes.io/node-group"
-    value = "${local.envName}-apps"
+    value = "${local.envName}-app"
   }
   initial_node_labels {
-    key   = "node.wescaleout.cloud/apps"
+    key   = "node.wescaleout.cloud/app"
     value = "true"
   }
   // https://docs.oracle.com/en-us/iaas/Content/Compute/References/computeshapes.htm
