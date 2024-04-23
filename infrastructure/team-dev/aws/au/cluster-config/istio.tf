@@ -1,36 +1,20 @@
-data "helm_template" "istio-crds" {
-  name       = "istio-base"
-  repository = "https://istio-release.storage.googleapis.com/charts"
-  chart      = "base"
-  version    = "1.21.1"
-  namespace  = "istio-system"
-  set {
-    name  = "base.enableCRDTemplates"
-    value = true
-  }
-  show_only = [
-    "templates/crds.yaml",
-  ]
-}
-
-data "kubectl_file_documents" "istio-crds" {
-  content = data.helm_template.istio-crds.manifest
-}
-
-resource "kubectl_manifest" "istio-crds" {
-  for_each  = data.kubectl_file_documents.istio-crds.manifests
-  yaml_body = each.value
+resource "helm_release" "istio-base" {
+  name             = "istio-base"
+  repository       = "https://istio-release.storage.googleapis.com/charts"
+  chart            = "base"
+  version          = "1.21.1"
+  namespace        = "istio-system"
+  create_namespace = true
 }
 
 resource "helm_release" "istiod" {
-  name             = "istiod"
-  version          = "1.21.1"
-  repository       = "https://istio-release.storage.googleapis.com/charts"
-  chart            = "istiod"
-  namespace        = "istio-system"
-  create_namespace = true
+  name       = "istiod"
+  version    = "1.21.1"
+  repository = "https://istio-release.storage.googleapis.com/charts"
+  chart      = "istiod"
+  namespace  = "istio-system"
   depends_on = [
-    kubectl_manifest.istio-crds
+    helm_release.istio-base
   ]
   values = [<<YAML
 pilot:
@@ -52,6 +36,8 @@ resource "helm_release" "istio-gateway" {
   namespace  = "istio-system"
   version    = "1.21.1"
   values = [<<YAML
+autoscaling:
+  enabled: false
 replicaCount: 3
 nodeSelector:
   node.wescaleout.cloud/routing: "true"
