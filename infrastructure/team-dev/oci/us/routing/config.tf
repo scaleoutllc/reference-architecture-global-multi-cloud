@@ -39,6 +39,5 @@ provider "oci" {
 variable "oci_private_key" {} # comment for local applies
 
 provider "aws" {
-  region  = "us-east-1"
-  profile = "us"
+  region = "us-east-1"
 }
