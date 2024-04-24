@@ -1,3 +1,11 @@
+locals {
+  team-dev-us = {
+    tenancy_id     = "ocid1.tenancy.oc1..aaaaaaaaqmdyo455h7pgzmgvsn5ue4dg73oxhp47udjc66c3vlg5h7wyzvsa"
+    compartment_id = "ocid1.tenancy.oc1..aaaaaaaaqmdyo455h7pgzmgvsn5ue4dg73oxhp47udjc66c3vlg5h7wyzvsa"
+    admin_group_id = "ocid1.group.oc1..aaaaaaaaoovxzrfd2dnffczohw4hedwdcw5tikv2tbq55ow2xlnmysvh3nza"
+  }
+}
+
 terraform {
   required_providers {
     oci = {
@@ -10,12 +18,4 @@ terraform {
 provider "oci" {
   region              = "us-chicago-1"
   config_file_profile = "scaleout"
-}
-
-data "oci_identity_availability_domains" "ads" {
-  compartment_id = "ocid1.tenancy.oc1..aaaaaaaaqmdyo455h7pgzmgvsn5ue4dg73oxhp47udjc66c3vlg5h7wyzvsa"
-}
-
-output "show-ads" {
-  value = data.oci_identity_availability_domains.ads.availability_domains
 }
