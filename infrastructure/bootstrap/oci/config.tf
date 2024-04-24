@@ -17,5 +17,5 @@ terraform {
 
 provider "oci" {
   region              = "us-chicago-1"
-  config_file_profile = "scaleout"
+  config_file_profile = "scaleout" # uncomment for local applies
 }

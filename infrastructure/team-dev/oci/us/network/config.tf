@@ -41,4 +41,4 @@ provider "oci" {
   private_key = var.oci_private_key # comment for local applies
 }
 
-variable "oci_private_key" {}
+variable "oci_private_key" {} # comment for local applies

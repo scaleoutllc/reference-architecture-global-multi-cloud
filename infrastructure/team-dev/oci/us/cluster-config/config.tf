@@ -33,9 +33,12 @@ terraform {
 }
 
 provider "oci" {
-  region              = "us-chicago-1"
-  config_file_profile = "scaleout"
+  region = "us-chicago-1"
+  #config_file_profile = "scaleout" # uncomment for local applies
+  private_key = var.oci_private_key # comment for local applies
 }
+
+variable "oci_private_key" {} # comment for local applies
 
 // Use until https://github.com/oracle/terraform-provider-oci/issues/1948 is resolved
 provider "kubectl" {
