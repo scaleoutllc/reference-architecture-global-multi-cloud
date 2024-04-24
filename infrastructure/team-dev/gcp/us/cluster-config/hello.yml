@@ -2,9 +2,8 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: main
-#  sidecars are not required for simple ingress
-#  labels:
-#    istio-injection: enabled
+  labels:
+    istio-injection: enabled
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -12,7 +11,7 @@ metadata:
   name: hello-html
   namespace: main
 data:
-  index.html: hello from aws-au!
+  index.html: hello from gcp-us!
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -82,8 +81,7 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - aws-au.team.dev.wescaleout.cloud
-    - hello.aws-au.team.dev.wescaleout.cloud
+    - gcp-us.team.dev.wescaleout.cloud
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -91,11 +89,13 @@ metadata:
   name: hello
   namespace: main
 spec:
+  hosts:
+  - "*"
   gateways:
   - main/hello
   http:
   - route:
     - destination:
-        host: hello.main.svc.cluster.local
+        host: hello
         port:
           number: 80
