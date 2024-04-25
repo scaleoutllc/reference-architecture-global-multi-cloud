@@ -32,12 +32,12 @@ terraform {
       project = "oci-team-dev-us"
       name    = "oci-team-dev-us-network"
     }
-  }
+  } //test
 }
 
 provider "oci" {
   region = "us-chicago-1"
-  #config_file_profile = "scaleout" # uncomment for local applies
+  # config_file_profile = "scaleout" # uncomment for local applies
   private_key = base64decode(var.oci_private_key) # comment for local applies
 }
 
