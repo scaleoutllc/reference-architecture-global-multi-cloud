@@ -3,7 +3,7 @@ resource "aws_route53_record" "public_apex" {
   name    = local.routing.domain
   type    = "A"
   ttl     = 60
-  records = [oci_network_load_balancer_network_load_balancer.public-ingress.ip_addresses[0].ip_address]
+  records = [oci_load_balancer_load_balancer.public-ingress.ip_address_details[0].ip_address]
 }
 
 resource "aws_route53_record" "public_star" {
@@ -11,6 +11,6 @@ resource "aws_route53_record" "public_star" {
   name    = "*.${local.routing.domain}"
   type    = "A"
   ttl     = 60
-  records = [oci_network_load_balancer_network_load_balancer.public-ingress.ip_addresses[0].ip_address]
+  records = [oci_load_balancer_load_balancer.public-ingress.ip_address_details[0].ip_address]
 }
 

@@ -31,13 +31,26 @@ terraform {
 }
 
 provider "oci" {
-  region = "us-chicago-1"
-  #config_file_profile = "scaleout" # uncomment for local applies
-  private_key = base64decode(var.oci_private_key) # comment for local applies
+  region              = "us-chicago-1"
+  config_file_profile = "scaleout" # uncomment for local applies
+  #private_key = base64decode(var.oci_private_key) # comment for local applies
 }
 
-variable "oci_private_key" {} # comment for local applies
+#variable "oci_private_key" {} # comment for local applies
 
 provider "aws" {
   region = "us-east-1"
+}
+
+// TODO: either use k8s load balancer services for ingress, address the
+// lack of ability to target a node pool with a network load balancer or
+// accept that rotating routing nodes will require some kind of integration
+// with this workspace.
+data "oci_containerengine_node_pool" "routing" {
+  node_pool_id = local.cluster.routing-node-pool-id
+}
+locals {
+  active_nodes = [
+    for node in data.oci_containerengine_node_pool.routing.nodes : node if node.state == "ACTIVE"
+  ]
 }
