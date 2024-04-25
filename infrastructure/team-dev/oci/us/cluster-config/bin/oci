@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# This wrapper is expected to run on Terraform Cloud. There is currently no way
+# to fetch an authorization token for an OKE cluster using the OCI provider.
+# This shores up the missing functionality thanks to the fact that python/pip
+# is available on Terraform Cloud runners.
+# /ref https://github.com/oracle/terraform-provider-oci/issues/1948
+set -euo pipefail
+
+# These values are configured in the variable sets for this workspace.
+: "${OCI_CLI_USER?}"
+: "${OCI_CLI_REGION?}"
+: "${OCI_CLI_FINGERPRINT?}"
+: "${OCI_CLI_TENANCY?}"
+: "${OCI_CLI_KEY_CONTENT?}"
+
+# Install oci-cli of needed, sending stdout to stderr.
+if ! command -v oci &> /dev/null; then
+  pip install oci-cli 1>&2
+fi
+
+# Terraform cloud doesn't support multiline env vars. When this script is
+# executed in that context, OCI_CLI_KEY_CONTENT is base64 encoded. Detect
+# this and decode if needed.
+if [[ "$OCI_CLI_KEY_CONTENT" =~ ^[A-Za-z0-9+/]*=*$ ]]; then
+  export OCI_CLI_KEY_CONTENT="$(echo "${OCI_CLI_KEY_CONTENT}" | base64 -d 2>/dev/null)"
+fi
+
+# TODO: find out why any --cluster-id works.
+oci $@

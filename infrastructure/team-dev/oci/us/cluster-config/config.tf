@@ -10,10 +10,6 @@ locals {
 
 terraform {
   required_providers {
-    oci = {
-      source  = "oracle/oci"
-      version = "5.38.0"
-    }
     kubectl = {
       source  = "gavinbunney/kubectl"
       version = "=1.14.0"
@@ -32,32 +28,13 @@ terraform {
   }
 }
 
-provider "oci" {
-  region = "us-chicago-1"
-  #config_file_profile = "scaleout" # uncomment for local applies
-  private_key = var.oci_private_key # comment for local applies
-}
-
-variable "oci_private_key" {} # comment for local applies
-
-// Use until https://github.com/oracle/terraform-provider-oci/issues/1948 is resolved
 provider "kubectl" {
   host     = local.cluster.endpoint
   insecure = true // could not find CA cert in attributes of any resource
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
-    command     = "oci"
-    args = [
-      "ce",
-      "cluster",
-      "generate-token",
-      "--cluster-id",
-      "${local.cluster.id}",
-      "--region",
-      "us-chicago-1",
-      "--profile",
-      "scaleout"
-    ]
+    command     = "${path.module}/bin/oci"
+    args        = ["ce", "cluster", "generate-token", "--cluster-id", local.cluster.id]
   }
 }
 
@@ -67,18 +44,8 @@ provider "helm" {
     insecure = true // could not find CA cert in attributes of any resource
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
-      command     = "oci"
-      args = [
-        "ce",
-        "cluster",
-        "generate-token",
-        "--cluster-id",
-        "${local.cluster.id}",
-        "--region",
-        "us-chicago-1",
-        "--profile",
-        "scaleout"
-      ]
+      command     = "${path.module}/bin/oci"
+      args        = ["ce", "cluster", "generate-token", "--cluster-id", local.cluster.id]
     }
   }
 }

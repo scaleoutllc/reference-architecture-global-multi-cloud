@@ -33,6 +33,7 @@ provider "oci" {
 }
 
 variable "oci_private_key" {} # comment for local applies
+
 data "oci_identity_availability_domains" "all" {
   compartment_id = local.compartment_id
 }

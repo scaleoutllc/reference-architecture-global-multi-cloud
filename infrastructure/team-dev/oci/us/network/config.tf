@@ -38,7 +38,7 @@ terraform {
 provider "oci" {
   region = "us-chicago-1"
   #config_file_profile = "scaleout" # uncomment for local applies
-  private_key = var.oci_private_key # comment for local applies
+  private_key = base64decode(var.oci_private_key) # comment for local applies
 }
 
 variable "oci_private_key" {} # comment for local applies
