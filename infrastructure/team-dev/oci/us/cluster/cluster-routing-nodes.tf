@@ -27,7 +27,8 @@ resource "oci_containerengine_node_pool" "routing" {
         local.network.nodes_subnet.id
       ]
       pod_nsg_ids = [
-        local.network.pod_security_group_id
+        local.network.pod_security_group_id,
+        local.network.internal_ingress_security_group_id
       ]
     }
     // nodes spread across availability domains in single regional subnet.

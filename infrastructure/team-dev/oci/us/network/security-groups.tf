@@ -38,7 +38,7 @@ resource "oci_core_network_security_group_security_rule" "pod-ingress-pod" {
 }
 
 resource "oci_core_network_security_group_security_rule" "pod-ingress-control-plane" {
-  description               = "let pods ingress from control plane network"
+  description               = "let pods ingress from control plane for webhooks"
   network_security_group_id = oci_core_network_security_group.pod.id
   direction                 = "INGRESS"
   protocol                  = "all"

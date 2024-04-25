@@ -26,7 +26,7 @@ resource "oci_core_network_security_group_security_rule" "node-egress-world" {
   destination               = "0.0.0.0/0"
 }
 
-resource "oci_core_network_security_group_security_rule" "pod-ingress-node" {
+resource "oci_core_network_security_group_security_rule" "node-ingress-pod" {
   description               = "let pods reach other nodes"
   network_security_group_id = oci_core_network_security_group.node.id
   direction                 = "INGRESS"

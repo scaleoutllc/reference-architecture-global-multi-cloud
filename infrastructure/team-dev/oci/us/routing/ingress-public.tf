@@ -32,11 +32,11 @@ resource "oci_network_load_balancer_backend_set" "public-ingress" {
   health_checker {
     protocol           = "HTTP"
     interval_in_millis = 60000
-    port               = 30080
+    port               = 30021
     retries            = 2
     return_code        = "200"
     timeout_in_millis  = 3000
-    url_path           = "/"
+    url_path           = "/healthz/ready"
   }
 }
 
