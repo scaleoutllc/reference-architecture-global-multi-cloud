@@ -1,6 +1,6 @@
 resource "oci_core_subnet" "control-plane" {
   cidr_block                 = local.network.control_plane
-  compartment_id             = local.compartment_id
+  compartment_id             = var.compartment_id
   vcn_id                     = oci_core_vcn.main.id
   display_name               = "${local.name}-control-plane"
   prohibit_internet_ingress  = false
@@ -12,8 +12,8 @@ resource "oci_core_subnet" "control-plane" {
 }
 
 resource "oci_core_network_security_group" "control-plane" {
-  compartment_id = local.compartment_id
-  display_name   = "${local.envName}-control-plane"
+  compartment_id = var.compartment_id
+  display_name   = "${local.name}-control-plane"
   vcn_id         = oci_core_vcn.main.id
 }
 
@@ -23,6 +23,14 @@ resource "oci_core_network_security_group_security_rule" "world-ingress-control-
   direction                 = "INGRESS"
   protocol                  = "6"
   source                    = "0.0.0.0/0"
+}
+
+resource "oci_core_network_security_group_security_rule" "control-plane-egress-world" {
+  description               = "let control plane reach the world"
+  network_security_group_id = oci_core_network_security_group.control-plane.id
+  direction                 = "EGRESS"
+  protocol                  = "6"
+  destination               = "0.0.0.0/0"
 }
 
 resource "oci_core_network_security_group_security_rule" "nodes-ingress-control-plane" {

@@ -1,6 +1,6 @@
 resource "oci_core_subnet" "nodes" {
   cidr_block                 = local.network.nodes
-  compartment_id             = local.compartment_id
+  compartment_id             = var.compartment_id
   vcn_id                     = oci_core_vcn.main.id
   display_name               = "${local.name}-pods"
   route_table_id             = oci_core_route_table.private.id
@@ -13,8 +13,8 @@ resource "oci_core_subnet" "nodes" {
 }
 
 resource "oci_core_network_security_group" "node" {
-  compartment_id = local.compartment_id
-  display_name   = "${local.envName}-node"
+  compartment_id = var.compartment_id
+  display_name   = "${local.name}-node"
   vcn_id         = oci_core_vcn.main.id
 }
 

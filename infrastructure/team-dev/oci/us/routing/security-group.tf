@@ -1,5 +1,5 @@
 resource "oci_core_network_security_group" "world-to-lb" {
-  compartment_id = local.compartment_id
+  compartment_id = var.compartment_id
   display_name   = "${local.name}-world-to-lb"
   vcn_id         = local.network.vcn_id
 }

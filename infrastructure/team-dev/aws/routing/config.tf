@@ -7,8 +7,8 @@ locals {
   env       = "dev"
   region    = "global"
   workspace = "routing"
-  envName   = "${local.provider}-${local.team}-${local.env}-${local.region}"
-  name      = "${local.envName}-${local.workspace}"
+  name   = "${local.provider}-${local.team}-${local.env}-${local.region}"
+  name      = "${local.name}-${local.workspace}"
   tags      = {}
 }
 

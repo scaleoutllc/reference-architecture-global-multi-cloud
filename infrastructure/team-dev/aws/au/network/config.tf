@@ -1,14 +1,12 @@
 data "aws_region" "this_env" {}
 
 locals {
-  provider  = "aws"
-  team      = "team"
-  env       = "dev"
-  region    = "au"
-  workspace = "network"
-  envName   = "${local.provider}-${local.team}-${local.env}-${local.region}"
-  name      = "${local.envName}-${local.workspace}"
-  tags      = {}
+  provider = "aws"
+  team     = "team"
+  env      = "dev"
+  region   = "au"
+  name     = "${local.provider}-${local.team}-${local.env}-${local.region}"
+  tags     = {}
   network = {
     // https://www.davidc.net/sites/default/subnets/subnets.html?network=10.20.0.0&mask=20&division=13.3d40
     cidr            = "10.20.0.0/20"

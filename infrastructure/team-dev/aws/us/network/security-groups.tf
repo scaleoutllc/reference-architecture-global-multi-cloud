@@ -1,9 +1,9 @@
 resource "aws_security_group" "internal-ingress" {
-  name        = "${local.envName}-internal-ingress"
+  name        = "${local.name}-internal-ingress"
   description = "Make private resources (e.g. nodes) accept requests from public resources (e.g. load balancers)."
   vpc_id      = module.vpc.vpc_id
   tags = {
-    Name = "${local.envName}-internal-ingress"
+    Name = "${local.name}-internal-ingress"
   }
 }
 

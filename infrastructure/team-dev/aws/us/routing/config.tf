@@ -1,12 +1,10 @@
 locals {
-  provider  = "aws"
-  team      = "team"
-  env       = "dev"
-  region    = "us"
-  workspace = "routing"
-  envName   = "${local.provider}-${local.team}-${local.env}-${local.region}"
-  name      = "${local.envName}-${local.workspace}"
-  tags      = {}
+  provider = "aws"
+  team     = "team"
+  env      = "dev"
+  region   = "us"
+  name     = "${local.provider}-${local.team}-${local.env}-${local.region}"
+  tags     = {}
 }
 
 terraform {
@@ -28,4 +26,25 @@ terraform {
 provider "aws" {
   region  = "us-east-1"
   profile = "us"
+}
+
+data "tfe_outputs" "routing" {
+  organization = "scaleout"
+  workspace    = "scaleout-platform-team-dev-routing"
+}
+
+data "tfe_outputs" "network" {
+  organization = "scaleout"
+  workspace    = "aws-team-dev-us-network"
+}
+
+data "tfe_outputs" "cluster" {
+  organization = "scaleout"
+  workspace    = "aws-team-dev-us-cluster-engine"
+}
+
+locals {
+  routing = data.tfe_outputs.routing.values.aws-us
+  network = data.tfe_outputs.network.values
+  cluster = data.tfe_outputs.cluster.values
 }

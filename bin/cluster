@@ -41,11 +41,11 @@ fi
 echo "[$2]: Spinning $1..."
 cd "${SCRIPT_PATH}/../${CLUSTER_PATH}"
 if [[ $1 == "up" ]]; then
-  workspaces=("network" "cluster" "cluster-config" "routing")
+  workspaces=("network" "cluster/engine" "cluster/namespaces/istio-system" "cluster/namespaces/main" "routing")
   command="apply"
 fi
 if [[ $1 == "down" ]]; then
-  workspaces=("cluster-config" "routing" "cluster" "network")
+  workspaces=("routing" "cluster/engine" "network")
   command="destroy"
 fi
 
@@ -54,7 +54,7 @@ for workspace in "${workspaces[@]}"; do
     cd ${workspace}
     terraform init
     terraform ${command} -auto-approve
-  ) 2>&1 | sed "/^$/!s/^/\[$2\/${workspace}\]: /" &
+  ) 2>&1 | sed "s@^@\[$2/${workspace}\]: @" &
   tfpid=$!
   # -n ensures the loop stops if there are failures in the subshell
   wait -n

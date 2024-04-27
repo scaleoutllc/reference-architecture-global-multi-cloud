@@ -1,6 +1,6 @@
 resource "oci_core_subnet" "private" {
   cidr_block                 = local.network.private
-  compartment_id             = local.compartment_id
+  compartment_id             = var.compartment_id
   vcn_id                     = oci_core_vcn.main.id
   display_name               = "${local.name}-private"
   route_table_id             = oci_core_route_table.private.id

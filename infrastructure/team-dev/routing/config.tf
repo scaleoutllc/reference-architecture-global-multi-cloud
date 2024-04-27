@@ -112,3 +112,12 @@ provider "oci" {
 provider "acme" {
   server_url = "https://acme-v02.api.letsencrypt.org/directory"
 }
+
+data "tfe_outputs" "routing" {
+  organization = "scaleout"
+  workspace    = "scaleout-platform-routing"
+}
+
+locals {
+  routing = data.tfe_outputs.routing.values
+}

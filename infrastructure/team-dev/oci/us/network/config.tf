@@ -1,12 +1,10 @@
 locals {
-  provider  = "oci"
-  team      = "team"
-  env       = "dev"
-  region    = "us"
-  workspace = "network"
-  envName   = "${local.provider}-${local.team}-${local.env}-${local.region}"
-  name      = "${local.envName}-${local.workspace}"
-  tags      = {}
+  provider = "oci"
+  team     = "team"
+  env      = "dev"
+  region   = "us"
+  name     = "${local.provider}-${local.team}-${local.env}-${local.region}"
+  tags     = {}
   network = {
     // https://www.davidc.net/sites/default/subnets/subnets.html?network=10.50.0.0&mask=20&division=9.550
     cidr    = "10.50.0.0/20"
@@ -16,7 +14,20 @@ locals {
     control_plane = "10.50.14.0/24"
     public        = "10.50.15.0/24"
   }
-  compartment_id = "ocid1.tenancy.oc1..aaaaaaaaqmdyo455h7pgzmgvsn5ue4dg73oxhp47udjc66c3vlg5h7wyzvsa"
+}
+
+variable "tenancy_ocid" {}
+variable "user_ocid" {}
+variable "fingerprint" {}
+variable "private_key" {}
+variable "compartment_id" {}
+
+provider "oci" {
+  region       = "us-chicago-1"
+  tenancy_ocid = var.tenancy_ocid
+  user_ocid    = var.user_ocid
+  fingerprint  = var.fingerprint
+  private_key  = var.private_key
 }
 
 terraform {
@@ -32,13 +43,5 @@ terraform {
       project = "oci-team-dev-us"
       name    = "oci-team-dev-us-network"
     }
-  } //test
+  }
 }
-
-provider "oci" {
-  region = "us-chicago-1"
-  # config_file_profile = "scaleout" # uncomment for local applies
-  private_key = base64decode(var.oci_private_key) # comment for local applies
-}
-
-variable "oci_private_key" {} # comment for local applies

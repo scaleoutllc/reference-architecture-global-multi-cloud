@@ -1,7 +1,7 @@
 // assigned to routing nodes / load balancers for internal comms
 resource "oci_core_network_security_group" "internal-ingress" {
-  compartment_id = local.compartment_id
-  display_name   = "${local.envName}-internal-ingress"
+  compartment_id = var.compartment_id
+  display_name   = "${local.name}-internal-ingress"
   vcn_id         = oci_core_vcn.main.id
 }
 
@@ -15,8 +15,8 @@ resource "oci_core_network_security_group_security_rule" "internal-ingress" {
 
 // assigned to all pods
 resource "oci_core_network_security_group" "pod" {
-  compartment_id = local.compartment_id
-  display_name   = "${local.envName}-pod"
+  compartment_id = var.compartment_id
+  display_name   = "${local.name}-pod"
   vcn_id         = oci_core_vcn.main.id
 }
 

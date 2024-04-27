@@ -1,7 +1,7 @@
 # // TODO: load balancers target a single subnet, are they automatically deployed
 # // across all availability domains in the subnet?
 # resource "oci_network_load_balancer_network_load_balancer" "public-ingress" {
-#   compartment_id                 = local.compartment_id
+#   compartment_id                 = var.compartment_id
 #   display_name                   = local.name
 #   subnet_id                      = local.network.public_subnet.id
 #   is_private                     = false

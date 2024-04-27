@@ -1,5 +1,5 @@
 resource "oci_load_balancer_load_balancer" "public-ingress" {
-  compartment_id = local.compartment_id
+  compartment_id = var.compartment_id
   display_name   = local.name
   subnet_ids     = [local.network.public_subnet.id]
   is_private     = false
