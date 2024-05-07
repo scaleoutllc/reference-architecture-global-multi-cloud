@@ -21,7 +21,7 @@ wescaleout.cloud
 
 > *At the time of this writing Cloudflare does not support the creation of
 DNS subdomain zones (e.g. `dev.wescaleout.cloud`) without an enterprise
-account. To support ease of demonstration and testing by community members,
+account. To support ease of launchnstration and testing by community members,
 AWS/Route53 has been chosen for managing all DNS below the root zone. Any
 terraform-capable DNS provider that supports subdomain zones would work
 equally well.*
@@ -42,10 +42,10 @@ dev.wescaleout.cloud
 ```
 
 Next, delegate a subdomain for a team that will use development infrastructure.
-This implementation uses the team name `team`. The corresponding subdomain is:
+This implementation uses the team name `fast`. The corresponding subdomain is:
 
 ```
-team.dev.wescaleout.cloud
+fast.dev.wescaleout.cloud
 ```
 
 Next, choose which global locations and cloud providers will be supported and 
@@ -58,8 +58,8 @@ subdomains are as follows:
 *Requests to these domains will flow to services running in the specified
 provider at the location nearest to the requestor.*
 ```
-aws.team.dev.wescaleout.cloud
-gcp.team.dev.wescaleout.cloud
+aws.fast.dev.wescaleout.cloud
+gcp.fast.dev.wescaleout.cloud
 ```
 
 **Region Specific**
@@ -67,16 +67,16 @@ gcp.team.dev.wescaleout.cloud
 *Requests to these domains will flow to services running in the specified
 region, load balanced between cloud providers.*
 ```
-us.team.dev.wescaleout.cloud
-au.team.dev.wescaleout.cloud
+us.fast.dev.wescaleout.cloud
+au.fast.dev.wescaleout.cloud
 ```
 
 **Fully Specified**
 
 *Requests to these domains will flow to the exact provider & region specified.*
 ```
-aws-us.team.dev.wescaleout.cloud
-aws-au.team.dev.wescaleout.cloud
-gcp-us.team.dev.wescaleout.cloud
-gcp-au.team.dev.wescaleout.cloud
+aws-us.fast.dev.wescaleout.cloud
+aws-au.fast.dev.wescaleout.cloud
+gcp-us.fast.dev.wescaleout.cloud
+gcp-au.fast.dev.wescaleout.cloud
 ```

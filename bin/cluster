@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # A convenience script for simplifying the process of creating or destroying
-# numerous kubernetes clusters across cloud providers. For demonstration
+# numerous kubernetes clusters across cloud providers. For launchnstration
 # purposes only--not real world infrastructure management.
 set -euo pipefail
 SCRIPT_PATH="$(cd "$(dirname "$BASH_SOURCE[0]")"; pwd -P)"
@@ -28,11 +28,11 @@ fi
 IFS='-' read -r -a params <<< "$2"
 
 if [[ "${#params[@]}" != 4 ]]; then
-  echo "Please provide a valid cluster name (e.g. team-dev-aws-us)."
+  echo "Please provide a valid cluster name (e.g. fast-dev-aws-us)."
   exit 1
 fi
 
-CLUSTER_PATH="infrastructure/${params[0]}-${params[1]}/${params[2]}/${params[3]}"
+CLUSTER_PATH="infrastructure/environments/${params[0]}-${params[1]}/${params[2]}/${params[3]}"
 if [[ ! -d "${SCRIPT_PATH}/../${CLUSTER_PATH}" ]]; then
   echo "No cluster found in ${CLUSTER_PATH}."
   exit 1
@@ -41,21 +41,24 @@ fi
 echo "[$2]: Spinning $1..."
 cd "${SCRIPT_PATH}/../${CLUSTER_PATH}"
 if [[ $1 == "up" ]]; then
-  workspaces=("network" "cluster/engine" "cluster/namespaces/istio-system" "cluster/namespaces/main" "routing")
+  workspaces=("network" "cluster/(eks|oke|gke)" "cluster/nodes" "cluster/registry" "cluster/namespaces/istio-system" "cluster/namespaces/kube-system" "cluster/namespaces/main")
   command="apply"
 fi
 if [[ $1 == "down" ]]; then
-  workspaces=("routing" "cluster/engine" "network")
+  workspaces=("routing" "cluster/registry" "cluster/nodes" "cluster/(eks|oke|gke)" "network")
   command="destroy"
 fi
 
 for workspace in "${workspaces[@]}"; do
-  (
-    cd ${workspace}
-    terraform init
-    terraform ${command} -auto-approve
-  ) 2>&1 | sed "s@^@\[$2/${workspace}\]: @" &
-  tfpid=$!
-  # -n ensures the loop stops if there are failures in the subshell
-  wait -n
+  selected=$(find * -maxdepth 2 -type d | (grep -E "${workspace}"||true) | head -n1)
+  if [[ -d ${selected} ]]; then
+    (
+      cd $selected
+      terraform init
+      terraform ${command} -auto-approve
+    ) 2>&1 | sed "s@^@\[$2/${selected}\]: @" &
+    tfpid=$!
+    # -n ensures the loop stops if there are failures in the subshell
+    wait -n
+  fi
 done
